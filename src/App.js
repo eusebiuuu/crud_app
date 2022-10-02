@@ -33,7 +33,7 @@ export default function App() {
         setAuxDrinks(newDrinks);
         setSubstring(newSubstring);
     }
-    // To do: Loader, ingredients, revision
+    // To do: ingredients, logic, organisation, error message, revision
 
     return (<>
         <Navbar />
