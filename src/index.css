@@ -239,3 +239,8 @@ span {
     display: inline;
     margin: 10px 10px;
 }
+.loader {
+    margin: 30vh auto;
+    text-align: center;
+    width: 20%;
+}

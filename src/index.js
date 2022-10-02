@@ -5,7 +5,6 @@ import React from 'react';
 import App from './App';
 import './index.css';
 
-console.log("React version is " + React.version);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>

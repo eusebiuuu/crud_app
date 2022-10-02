@@ -4,6 +4,7 @@ import Cocktails from "./Cocktails"
 import CocktailDetails from "./CocktailDetails"
 import useFetch from "./useFetch";
 import Navbar from "./Navbar"
+import Loader from "./Loader"
 import About from "./About"
 import Input from "./Input"
 
@@ -36,15 +37,15 @@ export default function App() {
 
     return (<>
         <Navbar />
+        <Input substring={substring} onInputChange={handleInputChange} />
         <Routes>
-            <Route path="/cocktails" element={loading ? <div>Loading...</div> : <>
-                <Input substring={substring} onInputChange={handleInputChange} />
+            <Route path="/cocktails" element={loading ? <Loader /> : <>
                 <Cocktails drinks={auxDrinks} />
             </>} />
             <Route path="/about" element={<>
                 <About />
             </>} />
-            <Route path="/cocktails/:id" element={loading ? <div>Loading...</div> : <CocktailDetails drinks={auxDrinks} />} />
+            <Route path="/cocktails/:id" element={loading ? <Loader /> : <CocktailDetails drinks={auxDrinks} />} />
         </Routes>
     </>)
 }
