@@ -1,47 +1,76 @@
 import { useState, useEffect } from "react";
-import {Routes, Route} from "react-router-dom"
-import Cocktails from "./Cocktails"
-import CocktailDetails from "./CocktailDetails"
 import useFetch from "./useFetch";
-import Navbar from "./Navbar"
-import Loader from "./Loader"
-import About from "./About"
-import Input from "./Input"
+import {
+    FaEnvelopeOpen,
+    FaUser,
+    FaCalendarTimes,
+    FaMap,
+    FaPhone,
+    FaLock,
+} from 'react-icons/fa'
 
 export default function App() {
-    const [drinks, setDrinks] = useState([]);
-    // const [auxDrinks, setAuxDrinks] = useState([]);
-    const {get, loading} = useFetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=");
-    const [substring, setSubstring] = useState("");
+    const [title, setTitle] = useState("name");
+    const [content, setContent] = useState("Name");
+    const [changed, setChanged] = useState(false);
+    const {get, loading} = useFetch("https://randomuser.me/api/");
+    const [person, setPerson] = useState(null);
 
-    useEffect(() => {
-        get(substring)
-        .then(data => {
-            setDrinks(data.drinks);
-            // setAuxDrinks(data.drinks);
-        })
-        .catch(error => console.log(error))
-    }, [get, substring]);
-
-    function handleInputChange(event) {
-        setSubstring(event.target.value);
+    function handleMouseHover(curTitle, content) {
+        setTitle(curTitle);
+        setContent(content);
     }
 
+    function handleButtonClick() {
+        setChanged(previousVal => {
+            return !previousVal;
+        })
+    }
+
+    useEffect(() => {
+        get("")
+        .then(data => {
+            // console.log(loading);
+            setPerson(data);
+            setTitle("email");
+            setContent(data.results[0].email);
+        })
+        .catch(error => console.log(error));
+    }, [changed])
+
+    if (!person) {
+        return null;
+    }
+    const result = person.results[0];
+    const firstName = result.name.first;
+    const lastName = result.name.last;
+    const email = result.email;
+    const age = result.dob.age;
+    const {number, name} = result.location.street;
+    const phone = result.cell;
+    const password = result.login.password;
+    // console.log(loading);
+
     return (<>
-        <Navbar />
-        <Routes>
-            <Route path="/cocktails" element={<>
-                {loading && <Loader />}
-                {!loading && <Input substring={substring} onInputChange={handleInputChange} />}
-                {!loading && <Cocktails drinks={drinks} />}
-            </>} />
-            <Route path="/about" element={<>
-                <About />
-            </>} />
-            <Route path="/cocktails/:id" element={<>
-                {loading && <Loader />}
-                {!loading && <CocktailDetails drinks={drinks} />}
-            </>} />
-        </Routes>
+        <div className="black"></div>
+        <div className="container">
+            <img src={result.picture.large} />
+            <div className="message">
+                <p>My {title} is</p>
+                <div className="content">{content}</div>
+            </div>
+            <div className="icons">
+                <div><FaUser onMouseOver={() => handleMouseHover("name", firstName + " " + lastName)} /></div>
+                <div><FaEnvelopeOpen onMouseOver={() => handleMouseHover("email", email)} /></div>
+                <div><FaCalendarTimes onMouseOver={() => handleMouseHover("age", age)} /></div>
+                <div><FaMap onMouseOver={() => handleMouseHover("street", number + " " + name)} /></div>
+                <div><FaPhone onMouseOver={() => handleMouseHover("phone number", phone)} /></div>
+                <div><FaLock onMouseOver={() => handleMouseHover("password", password)} /></div>
+            </div>
+            <button className="btn generate" onClick={handleButtonClick}>
+                {loading && "Loading..."}
+                {!loading && "Generate random user"}
+            </button>
+        </div>
     </>)
 }
