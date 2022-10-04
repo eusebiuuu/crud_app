@@ -1,76 +1,58 @@
 import { useState, useEffect } from "react";
 import useFetch from "./useFetch";
-import {
-    FaEnvelopeOpen,
-    FaUser,
-    FaCalendarTimes,
-    FaMap,
-    FaPhone,
-    FaLock,
-} from 'react-icons/fa'
+import Loader from "./Loader"
+import Users from "./Users"
+import Error from "./Error"
+import Footer from "./Footer"
 
 export default function App() {
-    const [title, setTitle] = useState("name");
-    const [content, setContent] = useState("Name");
-    const [changed, setChanged] = useState(false);
-    const {get, loading} = useFetch("https://randomuser.me/api/");
-    const [person, setPerson] = useState(null);
+    const [followers, setFollowers] = useState([]);
+    const {get, loading} = useFetch("https://api.github.com/users/john-smilga/followers?per_page=100");
+    const [error, setError] = useState(null);
+    const [group, setGroup] = useState(-1);
+    const [curFollowers, setCurFollowers] = useState([]);
 
-    function handleMouseHover(curTitle, content) {
-        setTitle(curTitle);
-        setContent(content);
+    // Handle the errors
+
+    function handlePageChange(newPage) {
+        setGroup(newPage);
     }
 
-    function handleButtonClick() {
-        setChanged(previousVal => {
-            return !previousVal;
+    function handlePageIncrement(aux) {
+        setGroup(prevVal => {
+            return (prevVal + 1) % 10;
+        })
+    }
+
+    function handlePageDecrement(aux) {
+        setGroup(prevVal => {
+            return (prevVal + 9) % 10;
         })
     }
 
     useEffect(() => {
+        setCurFollowers(followers.slice(group * 10, group * 10 + 10));
+    }, [group]);
+
+    useEffect(() => {
         get("")
         .then(data => {
-            // console.log(loading);
-            setPerson(data);
-            setTitle("email");
-            setContent(data.results[0].email);
+            console.log(data);
+            setFollowers(data);
+            setGroup(0);
         })
-        .catch(error => console.log(error));
-    }, [changed])
-
-    if (!person) {
-        return null;
-    }
-    const result = person.results[0];
-    const firstName = result.name.first;
-    const lastName = result.name.last;
-    const email = result.email;
-    const age = result.dob.age;
-    const {number, name} = result.location.street;
-    const phone = result.cell;
-    const password = result.login.password;
-    // console.log(loading);
+        .catch(error => setError(error));
+    }, []);
 
     return (<>
-        <div className="black"></div>
-        <div className="container">
-            <img src={result.picture.large} />
-            <div className="message">
-                <p>My {title} is</p>
-                <div className="content">{content}</div>
-            </div>
-            <div className="icons">
-                <div><FaUser onMouseOver={() => handleMouseHover("name", firstName + " " + lastName)} /></div>
-                <div><FaEnvelopeOpen onMouseOver={() => handleMouseHover("email", email)} /></div>
-                <div><FaCalendarTimes onMouseOver={() => handleMouseHover("age", age)} /></div>
-                <div><FaMap onMouseOver={() => handleMouseHover("street", number + " " + name)} /></div>
-                <div><FaPhone onMouseOver={() => handleMouseHover("phone number", phone)} /></div>
-                <div><FaLock onMouseOver={() => handleMouseHover("password", password)} /></div>
-            </div>
-            <button className="btn generate" onClick={handleButtonClick}>
-                {loading && "Loading..."}
-                {!loading && "Generate random user"}
-            </button>
-        </div>
+        <div className="header"><h2>Pagination</h2></div>
+        <div className="underline"></div>
+        {!error && <div className="container">
+            {loading && <Loader />}
+            <Users users={curFollowers} />
+        </div>}
+        {error && <Error message={error.message} />}
+        <Footer group={group} onPageIncrement={handlePageIncrement} 
+        onPageDecrement={handlePageDecrement} onPageChange={handlePageChange} />
     </>)
 }

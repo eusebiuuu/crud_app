@@ -42,7 +42,7 @@ Variables
 --clr-green-light: hsl(125, 71%, 66%);
 --clr-black: #222;
 --ff-primary: Roboto, sans-serif;
---ff-secondary: Open Sans, sans-serif;
+--ff-secondary: 'Open Sans', sans-serif;
 --transition: all 0.3s linear;
 --spacing: 0.25rem;
 --radius: 0.5rem;
@@ -146,81 +146,87 @@ Cocktails
 ===========
 */
 body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	margin: 0 10%;
-	font-family: 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.black {
-    background-color: #222;
-    height: 50vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: -1;
-}
-.container {
-    margin: 25vh auto;
-    max-width: 800px;
-    width: 70vw;
-    padding: 1em;
-    background-color: white;
-    border-radius: 20px;
-    position: relative;
+.error {
+    text-transform: uppercase;
+    color: red;
     text-align: center;
-    padding: 1em;
-}
-.container::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    background: aliceblue;
-}
-.container img {
-    width: 150px;
-    height: 150px;
-    margin: 30px auto;
-    border-radius: 50%;
-    position: relative;
-}
-.icons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    font-size: 2em;
-}
-.icons div {
-    cursor: pointer;
-    width: 10%;
-    transition: var(--transition);
-}
-.icons div:hover {
-    color: var(--clr-primary-8);
-}
-.message {
-    width: 90%;
-    margin: 2em auto;
-}
-p {
-    margin: 0;
-}
-.content {
-    margin: 0;
-    font-size: 2.5em;
-}
-.generate {
-    margin: 1em;
 }
 .loader {
     margin: 30vh auto;
     text-align: center;
     width: 20%;
+}
+.header {
+    font-size: 2.5em;
+    margin: auto;
+    margin-top: 3em;
+    margin-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+    position: relative;
+}
+.underline {
+    border-top: 5px solid var(--clr-primary-5);
+    margin: auto;
+    margin-bottom: 2em;
+    max-width: 100px;
+    width: 20vw;
+}
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2em;
+    margin-bottom: 2em;
+}
+.card {
+    background-color: white;
+    padding: 2em;
+    border-radius: 20px;
+    text-align: center;
+}
+.card img {
+    border-radius: 50%;
+    margin: 0.5em 0;
+}
+.btn {
+    text-align: center;
+}
+.footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+}
+.transparent {
+    background-color: transparent;
+    text-transform: uppercase;
+    color: var(--clr-black);
+    padding: 0.375rem 0.75rem;
+    letter-spacing: var(--spacing);
+    display: inline-block;
+    transition: var(--transition);
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius);
+}
+.transparent:hover {
+    color: red;
+}
+.page {
+    background-color: var(--clr-primary-7);
+    border: none;
+}
+.page:hover {
+    background-color: var(--clr-grey-4);
+}
+.active {
+    background: transparent;
 }
