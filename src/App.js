@@ -1,58 +1,56 @@
 import { useState, useEffect } from "react";
 import useFetch from "./useFetch";
 import Loader from "./Loader"
-import Users from "./Users"
 import Error from "./Error"
-import Footer from "./Footer"
+import Input from "./Input"
+import Story from "./Story"
 
 export default function App() {
-    const [followers, setFollowers] = useState([]);
-    const {get, loading} = useFetch("https://api.github.com/users/john-smilga/followers?per_page=100");
-    const [error, setError] = useState(null);
-    const [group, setGroup] = useState(-1);
-    const [curFollowers, setCurFollowers] = useState([]);
+    // Add dark theme using context
+    // Loading content on scroll
+    // React Redux: see tutorial + build project
+    // Handle errors
 
-    // Handle the errors
-
-    function handlePageChange(newPage) {
-        setGroup(newPage);
-    }
-
-    function handlePageIncrement(aux) {
-        setGroup(prevVal => {
-            return (prevVal + 1) % 10;
-        })
-    }
-
-    function handlePageDecrement(aux) {
-        setGroup(prevVal => {
-            return (prevVal + 9) % 10;
-        })
-    }
+    const [stories, setStories] = useState([]);
+    const [query, setQuery] = useState("");
+    const [page, setPage] = useState(0);
+    const {get, loading} = useFetch("https://hn.algolia.com/api/v1/search?");
 
     useEffect(() => {
-        setCurFollowers(followers.slice(group * 10, group * 10 + 10));
-    }, [group]);
-
-    useEffect(() => {
-        get("")
+        get(`query=${query}&page=${page}`)
         .then(data => {
-            console.log(data);
-            setFollowers(data);
-            setGroup(0);
+            page > 0 ? setStories([...stories, ...data]) : setStories(data);
         })
-        .catch(error => setError(error));
+        .catch(error => console.log(error))
+    }, [page, query]);
+
+    function getNewPage() {
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+            setPage(prevPage => {
+                return prevPage + 1;
+            })
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("scroll", getNewPage);
+        return () => {
+            window.removeEventListener("scroll", getNewPage);
+        }
     }, []);
 
+    function handleQueryChange(event) {
+        setQuery(event.target.value);
+        setPage(0);
+    }
+
     return (<>
-        <div className="header"><h2>Pagination</h2></div>
-        <div className="underline"></div>
-        {loading && <Loader />}
-        {!error && <div className="container">
-            <Users users={curFollowers} />
-        </div>}
-        {error && <Error message={error.message} />}
-        <Footer group={group} onPageIncrement={handlePageIncrement} 
-        onPageDecrement={handlePageDecrement} onPageChange={handlePageChange} />
+        <h1>Search Hacker News</h1>
+        <Input query={props.query} onQueryChange={handleQueryChange} />;
+        <div className="container">
+            {stories.map((story, index) => {
+                return <Story key={index} story={story} />;
+            })}
+        </div>
     </>)
 }

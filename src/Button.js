@@ -1,6 +1,7 @@
 import clsx from "clsx"
 
 export default function Button(props) {
+    // make reusable
     const classes = clsx({
         "btn": !props.transparent,
         "page": !props.transparent,

@@ -170,7 +170,6 @@ body {
     margin-bottom: 0;
     text-align: center;
     font-weight: bold;
-    position: relative;
 }
 .underline {
     border-top: 5px solid var(--clr-primary-5);
@@ -181,53 +180,11 @@ body {
 }
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2em;
     margin-bottom: 2em;
 }
-.card {
+.story {
     background-color: white;
-    padding: 2em;
-    border-radius: 20px;
-    text-align: center;
-}
-.card img {
-    border-radius: 50%;
-    margin: 0.5em 0;
-}
-.btn {
-    text-align: center;
-}
-.footer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 2em;
-}
-.transparent {
-    background-color: transparent;
-    text-transform: uppercase;
-    color: var(--clr-black);
-    padding: 0.375rem 0.75rem;
-    letter-spacing: var(--spacing);
-    display: inline-block;
-    transition: var(--transition);
-    font-size: 0.875rem;
-    cursor: pointer;
-    border: none;
-    border-radius: var(--radius);
-}
-.transparent:hover {
-    color: red;
-}
-.page {
-    background-color: var(--clr-primary-7);
-    border: none;
-}
-.page:hover {
-    background-color: var(--clr-grey-4);
-}
-.active {
-    background: transparent;
+    padding: 0.5em 1em;
 }
