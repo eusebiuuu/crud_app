@@ -47,8 +47,8 @@ export default function App() {
     return (<>
         <div className="header"><h2>Pagination</h2></div>
         <div className="underline"></div>
+        {loading && <Loader />}
         {!error && <div className="container">
-            {loading && <Loader />}
             <Users users={curFollowers} />
         </div>}
         {error && <Error message={error.message} />}

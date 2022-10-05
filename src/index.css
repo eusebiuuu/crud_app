@@ -158,9 +158,10 @@ body {
     text-align: center;
 }
 .loader {
-    margin: 30vh auto;
+    margin: auto;
+    width: 100px;
+    /* border: 2px solid; */
     text-align: center;
-    width: 20%;
 }
 .header {
     font-size: 2.5em;
