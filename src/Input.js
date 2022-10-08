@@ -4,7 +4,7 @@ import clsx from "clsx"
 export default function Input(props) {
     // make reusable
     const classes = clsx({
-        //
+        "input": true
     })
     const inputRef = useRef();
 
@@ -14,6 +14,6 @@ export default function Input(props) {
 
     return <div className="input-container">
         {/* <label htmlFor="cocktail"></label><br /> */}
-        <input ref={inputRef} id="query" value={props.query} onChange={props.onQueryChange} />
+        <input className={classes} ref={inputRef} id="query" value={props.query} onChange={props.onQueryChange} />
     </div>
 }

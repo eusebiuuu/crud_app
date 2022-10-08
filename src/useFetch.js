@@ -4,6 +4,7 @@ export default function useFetch(baseUrl) {
     const [loading, setLoading] = useState(true);
 
     function get(url) {
+        setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url)
             .then(response => {
@@ -15,7 +16,6 @@ export default function useFetch(baseUrl) {
                 throw Error(response.status)
             })
             .then(data => {
-                setLoading(false);
                 if (!data.error) {
                     resolve(data);
                     // console.log("success");
@@ -23,11 +23,12 @@ export default function useFetch(baseUrl) {
                     reject(data);
                     // console.log("error");
                 }
+                setLoading(false);
             })
             .catch(error => {
-                setLoading(false);
                 // console.log("catch");
                 reject(error);
+                setLoading(false);
             })
         })
     }

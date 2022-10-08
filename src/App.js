@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import useFetch from "./useFetch";
 import Loader from "./Loader"
-import Error from "./Error"
+// import Error from "./Error"
 import Input from "./Input"
 import Story from "./Story"
 
 export default function App() {
     // Add dark theme using context
     // Loading content on scroll
-    // React Redux: see tutorial + build project
+    // React Redux: see tutorial + build project with useReducer
     // Handle errors
+    // Learn SCSS
 
     const [stories, setStories] = useState([]);
     const [query, setQuery] = useState("");
@@ -19,7 +20,8 @@ export default function App() {
     useEffect(() => {
         get(`query=${query}&page=${page}`)
         .then(data => {
-            page > 0 ? setStories([...stories, ...data]) : setStories(data);
+            // console.log(data);
+            page > 0 ? setStories([...stories, ...data.hits]) : setStories(data.hits);
         })
         .catch(error => console.log(error))
     }, [page, query]);
@@ -44,13 +46,23 @@ export default function App() {
         setPage(0);
     }
 
+    function handleStoryRemove(id) {
+        const newStories = stories.filter(story => {
+            if (story.objectID !== id) {
+                return story;
+            }
+        })
+        setStories(newStories);
+    }
+
     return (<>
         <h1>Search Hacker News</h1>
-        <Input query={props.query} onQueryChange={handleQueryChange} />;
+        <Input query={query} onQueryChange={handleQueryChange} />
         <div className="container">
-            {stories.map((story, index) => {
-                return <Story key={index} story={story} />;
+            {stories && stories.map((story, index) => {
+                return <Story key={index} story={story} onStoryRemove={handleStoryRemove} />
             })}
+            {loading && <Loader />}
         </div>
     </>)
 }
