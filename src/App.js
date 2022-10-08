@@ -6,7 +6,6 @@ import Input from "./Input"
 import Story from "./Story"
 
 export default function App() {
-    // Handle errors
 
     const [stories, setStories] = useState([]);
     const [query, setQuery] = useState("");
