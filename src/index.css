@@ -154,8 +154,8 @@ body {
     text-align: center;
 }
 .loader {
-    margin: auto;
-    width: 100px;
+    margin: 2em auto;
+    width: 200px;
     /* border: 2px solid; */
     text-align: center;
 }
@@ -203,7 +203,7 @@ body {
 }
 .input:focus {
     outline: none;
-    border: 3px solid var(--clr-gray-1-perm)
+    border: 3px solid var(--clr-gray-1-perm);
 }
 .transparent {
     text-transform: capitalize;
@@ -225,4 +225,16 @@ body {
 }
 .blue {
     color: var(--clr-blue-2-perm);
+}
+.buttons {
+    width: 30%;
+    text-align: center;
+    margin: 1em auto;
+}
+.buttons div {
+    display: inline;
+}
+.location {
+    padding: 1em;
+    font-size: 1.5em;
 }

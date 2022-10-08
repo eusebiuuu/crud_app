@@ -6,13 +6,12 @@ import Input from "./Input"
 import Story from "./Story"
 
 export default function App() {
-    // Add dark theme using context
-    // React Redux: see tutorial + build project with useReducer
     // Handle errors
 
     const [stories, setStories] = useState([]);
     const [query, setQuery] = useState("");
     const [page, setPage] = useState(0);
+    const [totPages, setTotPages] = useState(0);
     const {get, loading} = useFetch("https://hn.algolia.com/api/v1/search?");
     const [lightTheme, setLightTheme] = useState(() => {
         console.log(window.matchMedia("(prefers-color-scheme: light)").matches);
@@ -25,32 +24,32 @@ export default function App() {
         } else {
             document.body.classList.remove('dark');
         }
-        // console.log(document.body.classList);
     }, [lightTheme]);
 
     useEffect(() => {
         get(`query=${query}&page=${page}`)
         .then(data => {
-            // console.log(data);
-            page > 0 ? setStories([...stories, ...data.hits]) : setStories(data.hits);
+            // page > 0 ? setStories([...stories, ...data.hits]) : setStories(data.hits);
+            setTotPages(data.nbPages);
+            setStories(data.hits);
         })
         .catch(error => console.log(error))
     }, [page, query]);
 
-    function getNewPage() {
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
-            setPage(prevPage => {
-                return prevPage + 1;
-            })
-        }
-    }
+    // function getNewPage() {
+    //     if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+    //         setPage(prevPage => {
+    //             return prevPage + 1;
+    //         })
+    //     }
+    // }
 
-    useEffect(() => {
-        window.addEventListener("scroll", getNewPage);
-        return () => {
-            window.removeEventListener("scroll", getNewPage);
-        }
-    }, []);
+    // useEffect(() => {
+    //     window.addEventListener("scroll", getNewPage);
+    //     return () => {
+    //         window.removeEventListener("scroll", getNewPage);
+    //     }
+    // }, []);
 
     function handleQueryChange(event) {
         setQuery(event.target.value);
@@ -72,17 +71,28 @@ export default function App() {
         })
     }
 
+    function handlePageChange(step) {
+        setPage(prev => {
+            return (prev + totPages + step) % totPages;
+        })
+    }
+
     return (<>
         <div className="header">
             <h1>Search Hacker News</h1>
             <Button default onButtonClick={handleButtonClick}>{lightTheme ? "Light" : "Dark"}</Button>
         </div>
         <Input query={query} onQueryChange={handleQueryChange} />
+        <div className="buttons">
+            <Button default value={-1} onButtonClick={handlePageChange}>Prev</Button>
+            <div className="location">{page + 1} of {totPages}</div>
+            <Button default value={1} onButtonClick={handlePageChange}>Next</Button>
+        </div>
+        {loading && <Loader />}
         <div className="container">
-            {stories && stories.map((story, index) => {
+            {!loading && stories.map((story, index) => {
                 return <Story key={index} story={story} onStoryRemove={handleStoryRemove} />
             })}
-            {loading && <Loader />}
         </div>
     </>)
 }
