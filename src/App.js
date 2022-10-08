@@ -1,21 +1,32 @@
 import { useState, useEffect } from "react";
 import useFetch from "./useFetch";
 import Loader from "./Loader"
-// import Error from "./Error"
+import Button from "./Button"
 import Input from "./Input"
 import Story from "./Story"
 
 export default function App() {
     // Add dark theme using context
-    // Loading content on scroll
     // React Redux: see tutorial + build project with useReducer
     // Handle errors
-    // Learn SCSS
 
     const [stories, setStories] = useState([]);
     const [query, setQuery] = useState("");
     const [page, setPage] = useState(0);
     const {get, loading} = useFetch("https://hn.algolia.com/api/v1/search?");
+    const [lightTheme, setLightTheme] = useState(() => {
+        console.log(window.matchMedia("(prefers-color-scheme: light)").matches);
+        return window.matchMedia("(prefers-color-scheme: light)").matches;
+    });
+
+    useEffect(() => {
+        if (!lightTheme) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
+        // console.log(document.body.classList);
+    }, [lightTheme]);
 
     useEffect(() => {
         get(`query=${query}&page=${page}`)
@@ -55,8 +66,17 @@ export default function App() {
         setStories(newStories);
     }
 
+    function handleButtonClick() {
+        setLightTheme(prev => {
+            return !prev;
+        })
+    }
+
     return (<>
-        <h1>Search Hacker News</h1>
+        <div className="header">
+            <h1>Search Hacker News</h1>
+            <Button default onButtonClick={handleButtonClick}>{lightTheme ? "Light" : "Dark"}</Button>
+        </div>
         <Input query={query} onQueryChange={handleQueryChange} />
         <div className="container">
             {stories && stories.map((story, index) => {
