@@ -10,35 +10,34 @@ Variables
 ===============
 */
 :root {
---clr-blue-1: hsl(205, 86%, 17%);
---clr-blue-2: hsl(205, 77%, 27%);
---clr-blue-3: hsl(205, 72%, 37%);
---clr-blue-4: hsl(205, 63%, 48%);
---clr-blue-5: hsl(205, 78%, 60%);
---clr-blue-6: hsl(205, 89%, 70%);
---clr-blue-7: hsl(205, 90%, 76%);
---clr-blue-8: hsl(205, 86%, 81%);
---clr-blue-9: hsl(205, 90%, 88%);
---clr-blue-10: hsl(205, 100%, 96%);
---clr-white-temp: #fff;
---clr-white-perm: #fff;
---clr-black-temp: hsl(210, 3%, 15%);
---clr-black-perm: hsl(200, 2%, 25%);
---clr-gray-1: hsl(210, 3%, 42%);
---clr-gray-2: hsl(210, 4%, 67%);
---clr-gray-3: hsl(210, 5%, 84%);
---clr-gray-4: hsl(210, 36%, 96%);
---clr-red-dark: hsl(360, 67%, 44%);
---clr-red-light: hsl(360, 71%, 66%);
---clr-green-dark: hsl(125, 67%, 44%);
---clr-green-light: hsl(125, 71%, 66%);
---ff-primary: Roboto, sans-serif;
---ff-secondary: 'Open Sans', sans-serif;
---transition: all 0.3s linear;
---spacing: 0.25rem;
---radius: 0.5rem;
---light-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
---dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+/* Color template */
+    --clr-blue-1-temp: hsl(205, 86%, 17%);
+    --clr-blue-1-perm: hsl(205, 77%, 27%);
+    --clr-blue-2-temp: hsl(205, 72%, 37%);
+    --clr-blue-2-perm: hsl(205, 63%, 48%);
+    --clr-blue-3: hsl(205, 78%, 60%);
+    --clr-blue-4-temp: hsl(205, 90%, 76%);
+    --clr-blue-4-perm: hsl(205, 86%, 81%);
+    --clr-blue-5-temp: hsl(205, 90%, 88%);
+    --clr-blue-5-perm: hsl(205, 100%, 96%);
+/* Black and white */
+    --clr-black-temp: hsl(210, 3%, 15%);
+    --clr-black-perm: hsl(200, 2%, 25%);
+    --clr-gray-1-temp: hsl(210, 3%, 42%);
+    --clr-gray-1-perm: hsl(210, 4%, 67%);
+    --clr-gray-2-temp: hsl(210, 9%, 91%);
+    --clr-gray-2-perm: hsl(210, 36%, 96%);
+    --clr-white-temp: #fff;
+    --clr-white-perm: #fff;
+/* Fonts */
+    --ff-primary: Roboto, sans-serif;
+    --ff-secondary: 'Open Sans', sans-serif;
+/* Others */
+    --transition: all 0.3s linear;
+    --spacing: 0.25rem;
+    --radius: 0.5rem;
+    --light-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 /*
 =============== 
@@ -52,7 +51,7 @@ Global Styles
 }
 body {
     font-family: var(--ff-primary);
-    background: var(--clr-gray-4);
+    background: var(--clr-gray-2-temp);
     color: var(--clr-black-temp);
     line-height: 1.5;
     font-size: 0.875rem;
@@ -89,7 +88,7 @@ h4 {
 }
 p {
     margin-bottom: 1.25rem;
-    color: var(--clr-gray-2);
+    color: var(--clr-gray-1-perm);
 }
 @media screen and (min-width: 800px) {
     h1 {
@@ -129,25 +128,25 @@ p {
     color: var(--clr-white-temp);
     background: var(--clr-black-temp);
 }
+.dark {
+    --clr-blue-5-temp: hsl(205, 86%, 17%);
+    --clr-blue-4-temp: hsl(205, 72%, 37%);
+    --clr-blue-2-temp: hsl(205, 90%, 76%);
+    --clr-blue-1-temp: hsl(205, 90%, 88%);
+    --clr-black-temp: #fff;
+    --clr-gray-2-temp: hsl(210, 3%, 42%);
+    --clr-gray-1-temp: hsl(210, 9%, 91%);
+    --clr-white-temp: hsl(210, 3%, 15%);
+}
 /*
 ===========
 Hacker News
 ===========
 */
-.dark {
-    --clr-white-temp: #222;
-    --clr-black-temp: hsl(210, 36%, 96%);
-    --clr-blue-3: hsl(205, 86%, 81%);
-    --clr-blue-8: hsl(205, 72%, 37%);
-    --clr-gray-1: hsl(210, 36%, 96%);
-    --clr-gray-4: hsl(210, 3%, 42%);
-    --clr-red-dark: hsl(360, 71%, 66%);
-    --clr-green-dark: hsl(125, 71%, 66%);
-}
 body {
 	margin: 0 10%;
-	/* -webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale; */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 .error {
     text-transform: uppercase;
@@ -171,7 +170,7 @@ body {
     align-items: center;
 }
 .underline {
-    border-top: 5px solid var(--clr-blue-5);
+    border-top: 5px solid var(--clr-blue-3);
     margin: auto;
     margin-bottom: 2em;
     max-width: 100px;
@@ -196,7 +195,7 @@ body {
     font-size: 1.4em;
     text-transform: capitalize;
     border: 3px transparent solid;
-    border-bottom: 3px solid var(--clr-gray-2);
+    border-bottom: 3px solid var(--clr-gray-1-perm);
     margin: 1em 0;
     color: var(--clr-black-temp);
     transition: var(--transition);
@@ -204,12 +203,12 @@ body {
 }
 .input:focus {
     outline: none;
-    border: 3px solid var(--clr-gray-2)
+    border: 3px solid var(--clr-gray-1-perm)
 }
 .transparent {
     text-transform: capitalize;
     background: transparent;
-    color: var(--clr-black-temp);
+    color: var(--clr-black-perm);
     padding: 0.375rem 0.75rem;
     letter-spacing: 0.10rem;
     display: inline-block;
@@ -225,5 +224,5 @@ body {
     color: red;
 }
 .blue {
-    color: var(--clr-blue-4);
+    color: var(--clr-blue-2-perm);
 }
