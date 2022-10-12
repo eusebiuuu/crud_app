@@ -1,11 +1,14 @@
 import {useState} from "react"
 
 export default function useFetch(baseUrl) {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    // console.log(loading);
 
     function get(url) {
         setLoading(true);
+        // console.log(loading);
         return new Promise((resolve, reject) => {
+            
             fetch(baseUrl + url)
             .then(response => {
                 // console.log(response);
@@ -16,6 +19,7 @@ export default function useFetch(baseUrl) {
                 throw Error(response.status)
             })
             .then(data => {
+                console.log(data);
                 if (!data.error) {
                     resolve(data);
                     // console.log("success");
@@ -31,6 +35,7 @@ export default function useFetch(baseUrl) {
                 setLoading(false);
             })
         })
+
     }
 
     return {get, loading};

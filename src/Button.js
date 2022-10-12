@@ -1,12 +1,12 @@
 import clsx from "clsx"
 
 export default function Button(props) {
-    // make reusable
+    const {className, value, onButtonClick, type, children, ...rest} = props;
     const classes = clsx({
-        "btn": props.default,
-        "transparent": props.transparent,
-        "red": props.red,
-        "blue": props.blue
-    })
-    return <button className={classes} onClick={() => props.onButtonClick(props.value)}>{props.children}</button>;
+            "btn": type === "default",
+            "special": type === "special"
+        },
+        className
+    )
+    return <button className={classes} value={value} onClick={onButtonClick} {...rest}>{children}</button>;
 }
