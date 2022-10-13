@@ -16,9 +16,6 @@ const categories = ["sports", "history", "politics"];
 const difficulties = ["easy", "medium", "hard"];
 
 export default function App() {
-    // error handling
-    // emoji
-    // gitignore
     const [questionsCount, setQuestionsCount] = useState("10");
     const [category, setCategory] = useState("sports");
     const [difficulty, setDifficulty] = useState("easy");
