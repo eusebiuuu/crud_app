@@ -1,7 +1,7 @@
 import Button from "./Button";
 
 export default function Question(props) {
-    const {question, good, total, onOptionChoose} = props;
+    const {question, good, current, total, onOptionChoose} = props;
     const options = [];
     question.incorrect_answers.forEach((ans) => {
         options.push(ans);
@@ -14,13 +14,16 @@ export default function Question(props) {
     }
 
     return <>
+    <div className="info">
+        <div>Answered questions: {current}</div>
         <div>Correct Answers: {good}/{total}</div>
+    </div>
         <h2>{question.question}</h2>
         <div className="options">
             {options.map((option, index) => {
-                return <Button type={"default"} key={index} value={option} onButtonClick={handleCurOptionChoose}>{option}</Button>
+                return <Button type="default" key={index} value={option} onButtonClick={handleCurOptionChoose}>{option}</Button>
             })}
         </div>
-        <button onClick={() => onOptionChoose(0)}>Next Question</button>
+        <button className="special" onClick={() => onOptionChoose(0)}>Next Question</button>
     </>
 }

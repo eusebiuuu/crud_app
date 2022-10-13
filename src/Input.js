@@ -14,11 +14,9 @@ export default function Input(props) {
         inputRef.current.focus();
     },[])
 
-    return <div className="input-container">
-        <label>
-            <div>{label}</div>
-            <input className={classes} ref={inputRef} 
-            value={value} onChange={onValueChange} {...rest} />
-        </label>
-    </div>
+    return <label className="input-container">
+        <h4>{label}</h4>
+        <input className={classes} ref={inputRef} 
+        value={value} onChange={onValueChange} {...rest} />
+    </label>
 }

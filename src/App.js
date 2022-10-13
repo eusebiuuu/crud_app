@@ -16,13 +16,10 @@ const categories = ["sports", "history", "politics"];
 const difficulties = ["easy", "medium", "hard"];
 
 export default function App() {
-    // use context
     // error handling
-    // use dark theme
     // emoji
-    // logic
-    // CSS
-    const [questionsCount, setQuestionsCount] = useState(10);
+    // gitignore
+    const [questionsCount, setQuestionsCount] = useState("10");
     const [category, setCategory] = useState("sports");
     const [difficulty, setDifficulty] = useState("easy");
     const [questionIdx, setQuestionIdx] = useState(-1);
@@ -30,6 +27,7 @@ export default function App() {
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [questions, setQuestions] = useState(null);
     const {get, loading} = useFetch("https://opentdb.com/api.php?");
+    const [light, setLight] = useState(true);
     // console.log(loading)
     useEffect(() => {
         // console.log("ijfrufeih");
@@ -44,6 +42,15 @@ export default function App() {
         }
     }, [setup]);
 
+    useEffect(() => {
+        if (!light) {
+            document.body.classList.add("dark");
+        }
+        return () => {
+            document.body.classList.remove("dark");
+        }
+    })
+
     function handleNextQuestion() {
         setQuestionIdx((oldQuestionIdx) => {
             return oldQuestionIdx + 1;
@@ -51,6 +58,7 @@ export default function App() {
     }
 
     function handleQuestionsCountChange(event) {
+        // setQuestionsCount(Number.parseInt(event.target.value, 10));
         setQuestionsCount(event.target.value);
     }
 
@@ -76,29 +84,31 @@ export default function App() {
         SetSetup(true);
     }
 
-    return (<div>
+    function handleThemeChange() {
+        setLight(oldValue => {
+            return !oldValue;
+        })
+    }
+
+    return (<>
         {loading && <Loader />}
         {!loading && <>
-            {setup && <>
-                <div className="row">
-                    <h2>Setup Quiz</h2>
-                    <Input value={questionsCount} onValueChange={handleQuestionsCountChange} 
-                    label="Number of questions" type="number" min={1} max={10} />
-                </div>
-                <div className="row">
-                    <Select label={"Select category"} values={categories} value={category} onValueChange={handleCategoryChange} />
-                </div>
-                <div className="row">
-                    <Select label={"Select difficulty"} values={difficulties} value={difficulty} onValueChange={handleDifficultyChange} />
-                </div>
-                <Button type={"special"} value={""} onButtonClick={handleFormSubmit}>Start</Button>
-            </>}
+            <button className="btn" onClick={handleThemeChange}>{light ? "Light" : "Dark"}</button>
+            {setup && <div className="container">
+                <h2>Setup Quiz</h2>
+                <Input value={questionsCount} onValueChange={handleQuestionsCountChange} 
+                label="Number of questions" type="number" />
+                <Select label={"Select category"} values={categories} value={category} onValueChange={handleCategoryChange} />
+                <Select label={"Select difficulty"} values={difficulties} value={difficulty} onValueChange={handleDifficultyChange} />
+                <Button type="special" value={""} onButtonClick={handleFormSubmit}>Start</Button>
+            </div>}
             {!setup && <>
-                {questions && <>
-                    <Question onOptionChoose={handleOptionChoose} good={correctAnswers} total={questionsCount} question={questions[Math.min(questionIdx, questions.length - 1)]} />
-                    {questionIdx === questionsCount && <End good={correctAnswers} total={questionsCount} onQuizEnd={handleQuizEnd} />}
-                </>}
+                {questions && <div className="container">
+                    <Question onOptionChoose={handleOptionChoose} good={correctAnswers} current={questionIdx} total={questionsCount} 
+                    question={questions[Math.min(questionIdx, questions.length - 1)]} />
+                </div>}
+                <End current={questionIdx} good={correctAnswers} total={questionsCount} onQuizEnd={handleQuizEnd} />
             </>}
         </>}
-    </div>)
+    </>)
 }
